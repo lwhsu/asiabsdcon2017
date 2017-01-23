@@ -1,0 +1,74 @@
+\documentclass[sigconf]{acmart}
+
+\usepackage{booktabs} % For formal tables
+
+
+% Copyright
+%\setcopyright{none}
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\setcopyright{usgov}
+%\setcopyright{usgovmixed}
+%\setcopyright{cagov}
+%\setcopyright{cagovmixed}
+
+
+% DOI
+%\acmDOI{10.475/123_4}
+
+% ISBN
+%\acmISBN{123-4567-24-567/08/06}
+
+%Conference
+\acmConference[ASIABSDCON'17]{Aisa BSD Conference}{March 2017}{Tokyo, Japan} 
+\acmYear{2017}
+\copyrightyear{2017}
+
+%\acmPrice{15.00}
+
+
+\begin{document}
+\title{Continuous Integration of The FreeBSD Project}
+\subtitle{Build the daemon with daemon}
+
+\author{Li-Wen Hsu}
+\affiliation{The FreeBSD Project}
+\email{lwhsu@FreeBSD.org}
+
+\begin{abstract}
+The FreeBSD project's continuous integration project started in the late 2013.
+We use Jenkins automation server to build our continuous integration system.
+It monitors the svn repository for new commits and triggers a new build of it.
+In each build, the build machine compiles the latest code, creates disk image
+and creates a virtual machine to run test suite. In the meantime, we collect
+the compiler warnings and perform some further checks like clang analyzer. All
+these information are published to the developers and users to improve the
+quality of the FreeBSD project. In this paper, we describe the details of the
+system implementation.
+\end{abstract}
+
+\keywords{Continuous Integration, FreeBSD, Jenkins}
+
+\maketitle
+
+\section{Introduction}
+
+\section{Automatic Build and History of CI work in FreeBSD}
+
+\section{Self Tests}
+
+\section{Access to Results}
+
+\section{Open Configurations}
+
+\section{Other Integrations}
+
+\section{Conclusion}
+
+\section{Future Work}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{sigproc} 
+
+\end{document}
