@@ -315,11 +315,157 @@ https://wiki.freebsd.org/Jenkins/Setup .
 
 \section{Other Integrations}
 
+The best feature of Jenkins is its features can be extended by many plugins, we
+selected several plugins which considered useful for us and integrated into our
+system.
+
+\subsection{Notification}
+
+Make sure related developers can know the latest project status is very
+important. We use both Email and IRC notifications. The status for sending out
+notifications are:
+
+\begin{itemize}
+\item Build failed
+\item Build unstable (compile successfully, but some test cases failed)
+\item Build back to stable
+\end{itemize}
+
+And for notification email, we attach following information:
+\begin{itemize}
+\item Changes since last build (who \& what)
+\item Tail of the console output
+\item What are the test cases failed
+\item Related URLs
+\end{itemize}
+
+Email notification is considered a "double-edged sword", once we send out too
+many mails and people will consider them as spam. If nobody reads the
+notification mails and takes action, it is totally no use. So use carefully
+created a pre-send script with "Email-ext plugin", for filter out the internal
+errors of the jenkins cluster, to reduce false alert. The script is available
+at:
+https://github.com/freebsd/freebsd-ci/blob/master/scripts/email-ext/pre-send.groovy
+.
+
+\subsection{Code Review System}
+
+The FreeBSD project owns a code review system at https://reviews.FreeBSD.org ,
+which is setup with Phabricator, and jenkins has a "Phabricator Differential
+Plugin" plugin. It currently supports only git, we patched it to support
+subversion, and are also preparing to upstream it.
+
+On ci.FreeBSD.org, we have two jobs:
+
+\begin{itemize}
+\item FreeBSD-head-amd64-build-phabric
+\item FreeBSD-doc-head-igor-phabric
+\end{itemize}
+
+They are using "quarantine mode" of the "build-in-jail script sets", and are
+triggered when a new patch is uploaded to reviews.FreeBSD.org (fig. 5).
+
+And reports the build result back to reviews.FreeBSD.org (fig. 6).
+
+\subsection{Clang Static Analyzer}
+
+We created a "clang clang-build" job with Clang Static Analyzer, and leveraged
+the "bsd.clang-analyzed.mk" from NetBSD, simple build the whole world and
+kernel with:
+
+\begin{lstlisting}
+make analyze \
+CLANG_ANALYZE_OUTPUT_DIR=clangScanBuildReports \
+CLANG_ANALYZE_OUTPUT=html
+\end{lstlisting}
+
+command, then the result being taken cared by "Clang Scan-Build Plugin", which generates good web interface and history tracking (fig. 7, 8, 9)
+
+\subsection{Igor and Checkstyle}
+
+For document build, we use igor by Warren Block, and Checkstyle for checking
+the style of document XML. We worked with Warren and added a new option (-X) to
+igor, to output checkstyle XML. The respective job is FreeBSD-doc-head-igor.
+"Checkstyle Plugin" of Jenkins also provides good web interface and history
+tracking. (fig 10, 11, 12)
+
+\subsection{Compiler Warnings}
+
+We also collect compiler warnings with "compiler warning” plugin. For showing
+the trend of compiler warnings and this pushes developers produce higher
+quality code. (fig. 13, 14)
+
+\subsection{Build Status Badge}
+
+We provide build status badge for embedding in external web pages. For example,
+on https://wiki.FreeBSD.org/arm64 , we have badge as fig. 15
+
+To show the latest status of each branch. The badge URLs are:
+\begin{itemize}
+\item https://$<$job url$>$/badge/icon
+\item https://$<$job url$>$/lastCompletedBuild/badge/icon
+\end{itemize}
+
+\subsection{Others}
+
+We also use some other plugins for improving the interface and helping the
+maintenance task:
+
+\begin{itemize}
+\item SCM Sync configuration
+  \begin{itemize}
+  \item Use post-commit hook to notify administrators
+  \end{itemize}
+\item SafeRestart
+  \begin{itemize}
+  \item Schedule restart jenkins when all current jobs complete
+  \item Save and resume the build queue
+  \end{itemize}
+\item Green balls
+  \begin{itemize}
+  \item To replace blue status ball with green ones, to fulfill the convention
+        for most culture.
+  \end{itemize}
+\end{itemize}
+
 \section{Conclusion}
+
+In this paper, we described about the history and how we setup the latest CI
+system of the FreeBSD project.  CI does help the development of the FreeBSD
+project, and we hope these experience and codes can also help downstream
+projects.
 
 \section{Future Work}
 
+The most important future work is: have more people to work on testing FreeBSD,
+providing more build and test scripts. And there are some other ideas:
+
+\begin{itemize}
+\item CI for ports\\
+  Collaboration with "redports"\\
+  Automatically "exp-run"
+\item Check for reproducible build
+\item More tests, even some are not enabled by default\\
+Dtrace
+\item Build for project branches\\
+Make testing feature branches easier
+\item Performance tests
+\item Work with other projects
+\end{itemize}
+
+We hope these work can make the quality of FreeBSD even better.
+
 \subsection*{Acknowledgments}
+
+We want to thank following people, for sponsoring energy, idea and hardware:
+
+\begin{itemize}
+\item jenkins-admin@FreeBSD.org
+\item The FreeBSD Foundation
+\item clusteradmin@FreeBSD.org
+\item phabic-admin@FreeBSD.org
+\item People on -testing, -current, -stable mailing lists
+\end{itemize}
 
 {\footnotesize \bibliographystyle{acm}
 \bibliography{../common/bibliography}}
