@@ -1,5 +1,5 @@
 \documentclass[a4paper,twocolumn,10pt]{article}
-\usepackage{usenix,epsfig,endnotes,listings}
+\usepackage{usenix,epsfig,endnotes,listings,graphicx}
 \begin{document}
 
 %don't want date printed
@@ -122,7 +122,13 @@ amd64 for example:
   Run the image from "testvm" stage in a new created virtual machine.
 \end{itemize}
 
-Their relationship is shown in %XXX
+\begin{figure*}
+\includegraphics[width=\textwidth]{pipeline.eps}
+\caption{head-amd64 pipeline}
+\label{pipeline}
+\end{figure*}
+
+Their relationship is shown in ~\ref{pipeline}
 
 The codes are available at https://github.com/lwhsu/freebsd-ci and
 https://github.com/lwhsu/jjb-freebsd-ci , merging back to the main freebsd-ci
