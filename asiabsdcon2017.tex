@@ -160,8 +160,15 @@ virtual machines and extracting results is $scripts/test/run-tests.sh$ .
 We configure Kyua to generate results as JUnit XML format, which is natively
 supported by Jenkins, and many other tools. Jenkins default plugins take
 outputs from the builds, make it a friendly accessible web interface at
-https://<job url>/<build number>/testReport (fig. 2, 3), and maintains a
-historical data (fig. 4). This helps us tracking the software quality trending.
+https://<job url>/<build number>/testReport (~\ref{test-result}, 3), and
+maintains a historical data (fig. 4). This helps us tracking the software
+quality trending.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{test-result.png}
+\caption{Test result from a test job}
+\label{test-result}
+\end{figure*}
 
 The artifact.ci.FreeBSD.org is newly introduced in ci.FreeBSD.org, we upload
 the artifacts created in each stage of a build pipeline. We Add FTP over TLS
