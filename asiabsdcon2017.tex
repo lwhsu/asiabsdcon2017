@@ -154,8 +154,9 @@ catching timeout in case.
 After the testing virtual machine stopped, we extracted the test results from
 the disk image, and put to the workspace where jenkins will send back to the
 master for accounting. The script to create test virtual machine image is
-$scripts/build/build-test\_image.sh$ and the main script for executing tests in
-virtual machines and extracting results is $scripts/test/run-tests.sh$ .
+\path{scripts/build/build-test_image.sh}, and the main script for executing
+tests in virtual machines and extracting results is
+\path{scripts/test/run-tests.sh}.
 
 \section{Access to Results}
 
@@ -221,7 +222,7 @@ It is very important to make public can setup a highly identical instance of a
 public service, and security is also need to be considered. In the past,
 Jenkins job can only be edited on web interface, which is not easy to tracking
 the changes and reproduce. Users who has no administrative permission cannot
-see exactly configurations. Jenkins 2.0’s "pipeline as code" is a very
+see exactly configurations. Jenkins 2.0's "pipeline as code" is a very
 promising to solve this problem. On jenkins.FreeBSD.org, we have tested it for
 the jobs which build head and stable-10 branch. The source code is available at
 \url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/build/build-test.groovy}.
