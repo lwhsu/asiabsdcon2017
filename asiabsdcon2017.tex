@@ -187,8 +187,8 @@ the artifacts created in each stage of a build pipeline. We Add FTP over TLS
 feature in "Publish Over FTP Plugin", in the end of each stage, Jenkins uploads
 created files through FTPES, there is only one root directory  "snapshots" in
 artifact.ci.FreeBSD.org, and the directory layout of it is:
-${branch}/{svn\_revision}/{target}/{target\_arch}$, for example,
-$head/r303226/amd64/amd64$ . This layout is compatible with the official
+\path{{branch}/{svn_revision}/{target}/{target_arch}}, for example,
+\path{head/r303226/amd64/amd64} . This layout is compatible with the official
 download site. We hope that in the future these snapshot artifacts can also be
 included and be more easily accessed by users.
 
