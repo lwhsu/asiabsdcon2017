@@ -1,5 +1,5 @@
 \documentclass[a4paper,twocolumn,10pt]{article}
-\usepackage{usenix,epsfig,endnotes,listings,graphicx}
+\usepackage{usenix,epsfig,endnotes,listings,graphicx,hyperref}
 \begin{document}
 
 %don't want date printed
@@ -53,7 +53,7 @@ paper.
 \section{Automatic Build and History of CI work in FreeBSD}
 
 Dag-Erling Smørgrav created the first pubic CI system for the FreeBSD project:
-http://tinderbox.FreeBSD.org, this can be traced back in the mail archive in
+\url{http://tinderbox.FreeBSD.org}, this can be traced back in the mail archive in
 March 2002. It is believed the first continuous integration service of the
 FreeBSD project. Tinderbox is an open source project, codes are available at
 svn://svn.freebsd.org/base/user/des/tinderbox .  Documents can be found in
@@ -63,7 +63,7 @@ or inspiring the successive projects.
 
 In late 2013, Craig Rodrigues founded jenkins-admin@FreeBSD.org with several
 developers. The main duty of jenkins-admin is maintaining the jenkins
-instance in FreeBSD cluster, https://jenkins.FreeBSD.org. Which is an
+instance in FreeBSD cluster, \url{https://jenkins.FreeBSD.org}. Which is an
 independent successor of tinderbox.FreeBSD.org. We configure it monitors the
 FreeBSD src and doc repositories, and triggers a new build when there is new
 commit in each supported branch. We created the first "build-and-test pipeline"
@@ -85,8 +85,8 @@ Shortly, jenkins.FreeBSD.org become a significant role in the FreeBSD
 development.
 
 In 2016, with the hardwares sponsored by the FreeBSD foundation, we created
-https://ci.FreeBSD.org , an experimental site for testing new ideas. We still
-leverage Jenkins because it has proven useful on jenkins.FreeBSD.org. We
+\url{https://ci.FreeBSD.org}, an experimental site for testing new ideas. We
+still leverage Jenkins because it has proven useful on jenkins.FreeBSD.org. We
 implemented:
 
 \begin{itemize}
@@ -130,9 +130,9 @@ amd64 architecture for example:
 
 Their relationship is shown in ~\ref{pipeline}
 
-The codes are available at https://github.com/lwhsu/freebsd-ci and
-https://github.com/lwhsu/jjb-freebsd-ci , merging back to the main freebsd-ci
-repository or even svn.freebsd.org is proceeding.
+The codes are available at \url{https://github.com/lwhsu/freebsd-ci} and
+\url{https://github.com/lwhsu/jjb-freebsd-ci}, merging back to the main
+freebsd-ci repository or even svn.freebsd.org is proceeding.
 
 \section{Self Tests}
 
@@ -160,7 +160,7 @@ virtual machines and extracting results is $scripts/test/run-tests.sh$ .
 We configure Kyua to generate results as JUnit XML format, which is natively
 supported by Jenkins, and many other tools. Jenkins default plugins take
 outputs from the builds, make it a friendly accessible web interface at
-https://<job url>/<build number>/testReport (~\ref{test-result}, 3), and
+\url{https://<job-url>/<build-number>/testReport} (~\ref{test-result}, 3), and
 maintains a historical data (fig. 4). This helps us tracking the software
 quality trending.
 
@@ -186,7 +186,7 @@ Currently we have these artifacts for each pipeline:
 \item *.txz
   \begin{itemize}
   \item From *-build jobs
-  \item Distribution files just like what on https://download.FreeBSD.org
+  \item Distribution files just like what on \url{https://download.FreeBSD.org}
   \end{itemize}
 \item disk.img.xz
   \begin{itemize}
@@ -200,7 +200,7 @@ Currently we have these artifacts for each pipeline:
   \end{itemize}
 \end{itemize}
 
-All files are publicly available at http://artifact.ci.freebsd.org .
+All files are publicly available at \url{http://artifact.ci.freebsd.org}.
 
 \section{Open Configurations}
 It is very important to make public can setup a highly identical instance of a
@@ -210,8 +210,8 @@ the changes and reproduce. Users who has no administrative permission cannot
 see exactly configurations. Jenkins 2.0’s "pipeline as code" is a very
 promising to solve this problem. On jenkins.FreeBSD.org, we have tested it for
 the jobs which build head and stable-10 branch. The source code is available at
-https://github.com/freebsd/freebsd-ci/blob/master/scripts/build/build-test.groovy
-. However, currently not all the required Jenkins plugins of ci.FreeBSD.org
+\url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/build/build-test.groovy}.
+However, currently not all the required Jenkins plugins of ci.FreeBSD.org
 supports this. We will look into this again and may switch it later.
 
 We use an approach used by other project for a long time, Jenkins job builder,
@@ -261,8 +261,8 @@ And we use jail to ensure the build environment is fresh, and we can install
 "sudo" program inside jail, with full privileges granted, for maximum the
 things user can do for testing. Aa a result, "build-in-jail script sets” is
 created, they are currently developed at
-https://github.com/lwhsu/freebsd-ci/tree/jjb/scripts/jail . It’s first job is
-simplify environment setup and job execution, we have three scripts for each
+\url{https://github.com/lwhsu/freebsd-ci/tree/jjb/scripts/jail}. It’s first job
+is simplify environment setup and job execution, we have three scripts for each
 builder and publishers in definition of jenkins job builder:
 
 \begin{itemize}
@@ -324,7 +324,7 @@ environment is setup, and resource is also strictly limited, such as execution
 time.
 
 The other ci.FreeBSD.org setup can be found at
-https://wiki.freebsd.org/Jenkins/Setup .
+\url{https://wiki.freebsd.org/Jenkins/Setup}.
 
 \section{Other Integrations}
 
@@ -358,12 +358,12 @@ notification mails and takes action, it is totally no use. So use carefully
 created a pre-send script with "Email-ext plugin", for filter out the internal
 errors of the jenkins cluster, to reduce false alert. The script is available
 at:
-https://github.com/freebsd/freebsd-ci/blob/master/scripts/email-ext/pre-send.groovy
+\url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/email-ext/pre-send.groovy}
 .
 
 \subsection{Code Review System}
 
-The FreeBSD project owns a code review system at https://reviews.FreeBSD.org ,
+The FreeBSD project owns a code review system at \url{https://reviews.FreeBSD.org},
 which is setup with Phabricator, and jenkins has a "Phabricator Differential
 Plugin" plugin. It currently supports only git, we patched it to support
 subversion, and are also preparing to upstream it.
@@ -411,12 +411,12 @@ quality code. (fig. 13, 14)
 \subsection{Build Status Badge}
 
 We provide build status badge for embedding in external web pages. For example,
-on https://wiki.FreeBSD.org/arm64 , we have badge as fig. 15
+on \url{https://wiki.FreeBSD.org/arm64} , we have badge as fig. 15
 
 To show the latest status of each branch. The badge URLs are:
 \begin{itemize}
-\item https://$<$job url$>$/badge/icon
-\item https://$<$job url$>$/lastCompletedBuild/badge/icon
+\item \url{https://<job-url>/badge/icon}
+\item \url{https://<job url>/lastCompletedBuild/badge/icon}
 \end{itemize}
 
 \subsection{Others}
