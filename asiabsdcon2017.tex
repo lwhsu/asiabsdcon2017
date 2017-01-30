@@ -254,9 +254,9 @@ a "job template" for similar jobs. A typical job contains following steps:
 \end{enumerate}
 
 The respective job definition (of Jenkins job builder) is very simple
-(listing. 1):
+(listing \ref{jjb-job-def}):
 
-\begin{lstlisting}
+\begin{lstlisting}[captionpos=b,caption=Job definition,label=jjb-job-def]
 - job:
     name: FreeBSD-head-scan_build
     scm:
@@ -307,22 +307,18 @@ jenkins-admin creates a new job entry in jenkins job builder, push the new
 configuration to the Jenkins server. Everything is done. Our Jenkins server
 will execute it around the clock.
 
-For example, FreeBSD-head-arm64-build contains files as listing. 2:
+For example, FreeBSD-head-arm64-build contains files as listing \ref{job-conf}:
 
-\begin{lstlisting}
+\begin{lstlisting}[captionpos=b,caption=Job configurations,label=job-conf]
 (jail.conf)
 TARGET=amd64
 TARGET_ARCH=amd64
 WITH_32BIT=0
 OSRELEASE=10.3-RELEASE
-\end{lstlisting}
 
-\begin{lstlisting}
 (pkg-list)
 aarch64-binutils
-\end{lstlisting}
 
-\begin{lstlisting}
 (build.sh)
 #!/bin/sh
 env \
