@@ -272,9 +272,9 @@ The respective job definition (of Jenkins job builder) is very simple
       - timestamps
 \end{lstlisting}
 
-And we use jail to ensure the build environment is fresh, and we can install
-"sudo" program inside jail, with full privileges granted, for maximum the
-things user can do for testing. Aa a result, "build-in-jail script sets” is
+And we use jail to ensure the freshnes of the sbuild environment, and we can
+install "sudo" program inside jail, with full privileges granted, for maximum
+the things user can do for testing. Aa a result, "build-in-jail script sets” is
 created, they are currently developed at
 \url{https://github.com/lwhsu/freebsd-ci/tree/jjb/scripts/jail}. It’s first job
 is simplify environment setup and job execution, we have three scripts for each
