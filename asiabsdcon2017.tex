@@ -387,9 +387,23 @@ On ci.FreeBSD.org, we have two jobs:
 \end{itemize}
 
 They are using "quarantine mode" of the "build-in-jail script sets", and are
-triggered when a new patch is uploaded to reviews.FreeBSD.org (fig. 5).
+triggered when a new patch is uploaded to reviews.FreeBSD.org (fig.
+~\ref{build-patch}).
 
-And reports the build result back to reviews.FreeBSD.org (fig. 6).
+\begin{figure*}
+\includegraphics{build-patch.png}
+\caption{Build triggerd by a patch}
+\label{build-patch}
+\end{figure*}
+
+And reports the build result back to reviews.FreeBSD.org (fig.
+~\ref{patch-build-result}).
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{patch-build-result.png}
+\caption{Rsult of a build triggerd by a patch}
+\label{patch-build-result}
+\end{figure*}
 
 \subsection{Clang Static Analyzer}
 
