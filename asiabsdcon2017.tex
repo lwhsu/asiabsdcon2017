@@ -417,7 +417,27 @@ CLANG_ANALYZE_OUTPUT_DIR=clangScanBuildReports \
 CLANG_ANALYZE_OUTPUT=html
 \end{lstlisting}
 
-command, then the result being taken cared by "Clang Scan-Build Plugin", which generates good web interface and history tracking (fig. 7, 8, 9)
+command, then the result being taken cared by "Clang Scan-Build Plugin", which
+generates good web interface and history tracking (fig.
+\ref{scan-build-result}, \ref{scan-build-path}, \ref{clang-scan-build-trend})
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{scan-build-result.png}
+\caption{Clang scan-build result}
+\label{scan-build-result}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{scan-build-path.png}
+\caption{Clang scan-build result explanation}
+\label{scan-build-path}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics{clang-scan-build-trend.png}
+\caption{Clang scan-build trend}
+\label{clang-scan-build-trend}
+\end{figure*}
 
 \subsection{Igor and Checkstyle}
 
@@ -436,7 +456,14 @@ quality code. (fig. 13, 14)
 \subsection{Build Status Badge}
 
 We provide build status badge for embedding in external web pages. For example,
-on \url{https://wiki.FreeBSD.org/arm64} , we have badge as fig. 15
+on \url{https://wiki.FreeBSD.org/arm64} , we have badge as fig.
+~\ref{build-status-badge}
+
+\begin{figure*}
+\includegraphics{build-status-badge.png}
+\caption{Build satus badge}
+\label{build-status-badge}
+\end{figure*}
 
 To show the latest status of each branch. The badge URLs are:
 \begin{itemize}
