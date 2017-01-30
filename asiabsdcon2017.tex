@@ -136,10 +136,12 @@ freebsd-ci repository or even svn.freebsd.org is proceeding.
 
 \section{Self Tests}
 
-In 2013 Rui Paulo created the $/usr/tests$ hierarchy, with the Kyua test
-framework by Julio Merino. These tests can be performed by commands: $"cd
-/usr/tests; /usr/local/bin/kyua test"$ As of January 2017, we have 5986 tests
-for head branch, on amd64 architecture.
+In 2013 Rui Paulo created the \path{/usr/tests} hierarchy, with the Kyua test
+framework by Julio Merino. These tests can be performed by command:
+\begin{lstlisting}
+cd /usr/tests && kyua test
+\end{lstlisting}
+As of January 2017, we have 6023 tests for head branch on amd64 architecture.
 
 As previous section mentioned, we build virtual machine disk images with the
 required files and packages for running tests. We pre-install the kyua package
