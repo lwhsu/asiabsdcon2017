@@ -8,6 +8,8 @@
 \usepackage{hyperref}
 \usepackage{courier}
 
+\lstset{basicstyle=\footnotesize\ttfamily,framextopmargin=50pt,frame=bottomline}
+
 \begin{document}
 
 %don't want date printed
@@ -146,7 +148,7 @@ freebsd-ci repository or even svn.freebsd.org is proceeding.
 
 In 2013 Rui Paulo created the \path{/usr/tests} hierarchy, with the Kyua test
 framework by Julio Merino. These tests can be performed by command:
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\normalsize\ttfamily]
 cd /usr/tests && kyua test
 \end{lstlisting}
 As of January 2017, we have 6023 tests for head branch on amd64 architecture.
@@ -265,7 +267,7 @@ a "job template" for similar jobs. A typical job contains following steps:
 The respective job definition (of Jenkins job builder) is very simple
 (listing \ref{jjb-job-def}):
 
-\begin{lstlisting}[captionpos=b,caption=Job definition,label=jjb-job-def]
+\begin{lstlisting}[caption=Job definition,label=jjb-job-def]
 - job:
     name: FreeBSD-head-scan_build
     scm:
@@ -316,19 +318,21 @@ jenkins-admin creates a new job entry in jenkins job builder, push the new
 configuration to the Jenkins server. Everything is done. Our Jenkins server
 will execute it around the clock.
 
-For example, FreeBSD-head-arm64-build contains files as listing \ref{job-conf}:
+For example, FreeBSD-head-arm64-build contains files as listing
+\ref{job-conf-jail}, \ref{job-conf-pkg}, \ref{job-conf-build}:
 
-\begin{lstlisting}[captionpos=b,caption=Job configurations,label=job-conf]
-(jail.conf)
+\begin{lstlisting}[caption=Job configuration: jail.conf,label=job-conf-jail]
 TARGET=amd64
 TARGET_ARCH=amd64
 WITH_32BIT=0
 OSRELEASE=10.3-RELEASE
+\end{lstlisting}
 
-(pkg-list)
+\begin{lstlisting}[caption=Job configuration: pkg-list,label=job-conf-pkg]
 aarch64-binutils
+\end{lstlisting}
 
-(build.sh)
+\begin{lstlisting}[caption=Job configuration: build.sh,label=job-conf-build]
 #!/bin/sh
 env \
   JFLAG=${BUILDER_JFLAG} \
