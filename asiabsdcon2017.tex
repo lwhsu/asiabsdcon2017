@@ -76,7 +76,7 @@ developers. The main duty of jenkins-admin is maintaining the jenkins
 instance in FreeBSD cluster, \url{https://jenkins.FreeBSD.org}. Which is an
 independent successor of tinderbox.FreeBSD.org. We configure it monitors the
 FreeBSD src and doc repositories, and triggers a new build when there is new
-commit in each supported branch. We created the first "build-and-test pipeline"
+commit in each supported branch. We created the first ``build-and-test pipeline''
 for the FreeBSD project. In each build triggered by a change in repository,
 after compiling successes, we create a virtual machine disk image with the
 latest binaries, and spawn a new virtual machine to run tests. The test results
@@ -88,7 +88,7 @@ The highlight features of jenkins.FreeBSD.org are:
 \item Periodically build for head, stable-11, stable-10 and stable-9
 \item Architectures built against: amd64, i386, sparc64 and arm64
 \item Build FreeBSD with GCC, using amd64-xtoolchain-gcc
-\item Experimental Jenkins 2 "pipeline as code"
+\item Experimental Jenkins 2 ``pipeline as code''
 \end{itemize}
 
 Shortly, jenkins.FreeBSD.org become a significant role in the FreeBSD
@@ -106,8 +106,8 @@ implemented:
 
 Having a centralized artifact server enables people retrieving the files
 generated from each stage of a build, for reproducing issues for debugging
-purpose, or doing further tests. The details about job template are in "open
-configurations" section. Another experiment in this system is we are trying to
+purpose, or doing further tests. The details about job template are in ``open
+configurations'' section. Another experiment in this system is we are trying to
 make the build pipeline more fine-grained, and introduced more build types. For
 example, we not only created virtual machine disk image specialized for tests,
 but try to produce the distribution files and virtual machine disk images same
@@ -129,7 +129,7 @@ amd64 architecture for example:
 \item FreeBSD-head-amd64-testvm\\
   Build virtual machine disk image from distribution files and test files and package are pre-installed.
 \item FreeBSD-head-amd64-test\\
-  Run the image from "testvm" stage in a new created virtual machine.
+  Run the image from ``testvm'' stage in a new created virtual machine.
 \end{itemize}
 
 \begin{figure*}
@@ -197,8 +197,8 @@ outputs from the builds, make it a friendly accessible web interface at
 
 The artifact.ci.FreeBSD.org is newly introduced in ci.FreeBSD.org, we upload
 the artifacts created in each stage of a build pipeline. We Add FTP over TLS
-feature in "Publish Over FTP Plugin", in the end of each stage, Jenkins uploads
-created files through FTPES, there is only one root directory  "snapshots" in
+feature in ``Publish Over FTP Plugin'', in the end of each stage, Jenkins uploads
+created files through FTPES, there is only one root directory ``snapshots'' in
 artifact.ci.FreeBSD.org, and the directory layout of it is:
 \path{{branch}/{svn_revision}/{target}/{target_arch}}, for example,
 \path{head/r303226/amd64/amd64} . This layout is compatible with the official
@@ -232,7 +232,7 @@ It is very important to make public can setup a highly identical instance of a
 public service, and security is also need to be considered. In the past,
 Jenkins job can only be edited on web interface, which is not easy to tracking
 the changes and reproduce. Users who has no administrative permission cannot
-see exactly configurations. Jenkins 2.0's "pipeline as code" is a very
+see exactly configurations. Jenkins 2.0's ``pipeline as code''' is a very
 promising to solve this problem. On jenkins.FreeBSD.org, we have tested it for
 the jobs which build head and stable-10 branch. The source code is available at
 \url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/build/build-test.groovy}.
@@ -251,7 +251,7 @@ Jenkins administrators configure and test build scripts by hand. This is a
 bottleneck of the development. We also found that most of the build jobs are
 just having different build scripts, other parts of the configurations such as
 repository URL and notification settings are the same. It inspired us to create
-a "job template" for similar jobs. A typical job contains following steps:
+a ``job template'' for similar jobs. A typical job contains following steps:
 
 \begin{enumerate}
 \item Environment setup
@@ -283,9 +283,9 @@ The respective job definition (of Jenkins job builder) is very simple
 \end{lstlisting}
 
 And we use jail to ensure the freshness of the build environment, and we can
-install "sudo" program inside jail, with full privileges granted, for maximum
-the things user can do for testing. As a result, "build-in-jail script sets" is
-created, they are currently developed at
+install ``sudo'' program inside jail, with full privileges granted, for maximum
+the things user can do for testing. As a result, ``build-in-jail script sets''
+is created, they are currently developed at
 \url{https://github.com/lwhsu/freebsd-ci/tree/jjb/scripts/jail}. It's first job
 is simplify environment setup and job execution, we have three scripts for each
 builder and publishers in definition of jenkins job builder:
@@ -341,10 +341,10 @@ env \
   sh -x freebsd-ci/scripts/build/build-world-kernel.sh
 \end{lstlisting}
 
-We also add a "quarantine mode" of "build-in-jail script sets", just specify
-"QUARANTINE=1" in jail.conf, the the internet connection is removed after jail
-environment is setup, and resource is also strictly limited, such as execution
-time.
+We also add a ``quarantine mode'' of ``build-in-jail script sets'', just
+specify ``QUARANTINE=1'' in jail.conf, the the internet connection is removed
+after jail environment is setup, and resource is also strictly limited, such as
+execution time.
 
 The other ci.FreeBSD.org setup can be found at
 \url{https://wiki.freebsd.org/Jenkins/Setup}.
@@ -375,20 +375,20 @@ And for notification email, we attach following information:
 \item Related URLs
 \end{itemize}
 
-Email notification is considered a "double-edged sword", once we send out too
+Email notification is considered a ``double-edged sword'', once we send out too
 many mails and people will consider them as spam. If nobody reads the
 notification mails and takes action, it is totally no use. So use carefully
-created a pre-send script with "Email-ext plugin", for filter out the internal
-errors of the jenkins cluster, to reduce false alert. The script is available
-at:
+created a pre-send script with ``Email-ext plugin'', for filter out the
+internal errors of the jenkins cluster, to reduce false alert. The script is
+available at:
 \url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/email-ext/pre-send.groovy}
 .
 
 \subsection{Code Review System}
 
 The FreeBSD project owns a code review system at \url{https://reviews.FreeBSD.org},
-which is setup with Phabricator, and jenkins has a "Phabricator Differential
-Plugin" plugin. It currently supports only git, we patched it to support
+which is setup with Phabricator, and jenkins has a ``Phabricator Differential
+Plugin'' plugin. It currently supports only git, we patched it to support
 subversion, and are also preparing to upstream it.
 
 On ci.FreeBSD.org, we have two jobs:
@@ -398,8 +398,8 @@ On ci.FreeBSD.org, we have two jobs:
 \item FreeBSD-doc-head-igor-phabric
 \end{itemize}
 
-They are using "quarantine mode" of the "build-in-jail script sets", and are
-triggered when a new patch is uploaded to reviews.FreeBSD.org (fig.
+They are using ``quarantine mode'' of the ``build-in-jail script sets'', and
+are triggered when a new patch is uploaded to reviews.FreeBSD.org (fig.
 ~\ref{build-patch}).
 
 \begin{figure*}
@@ -419,9 +419,9 @@ And reports the build result back to reviews.FreeBSD.org (fig.
 
 \subsection{Clang Static Analyzer}
 
-We created a "clang clang-build" job with Clang Static Analyzer, and leveraged
-the "bsd.clang-analyzed.mk" from NetBSD, simple build the whole world and
-kernel with:
+We created a ``clang clang-build'' job with Clang Static Analyzer, and
+leveraged the ``bsd.clang-analyzed.mk'' from NetBSD, simple build the whole
+world and kernel with:
 
 \begin{lstlisting}
 make analyze \
@@ -429,8 +429,8 @@ CLANG_ANALYZE_OUTPUT_DIR=clangScanBuildReports \
 CLANG_ANALYZE_OUTPUT=html
 \end{lstlisting}
 
-command, then the result being taken cared by "Clang Scan-Build Plugin", which
-generates good web interface and history tracking (fig.
+command, then the result being taken cared by ``Clang Scan-Build Plugin'',
+which generates good web interface and history tracking (fig.
 \ref{scan-build-result}, \ref{scan-build-path}, \ref{clang-scan-build-trend})
 
 \begin{figure*}
@@ -456,7 +456,7 @@ generates good web interface and history tracking (fig.
 For document build, we use igor by Warren Block, and Checkstyle for checking
 the style of document XML. We worked with Warren and added a new option (-X) to
 igor, to output checkstyle XML. The respective job is FreeBSD-doc-head-igor.
-"Checkstyle Plugin" of Jenkins also provides good web interface and history
+``Checkstyle Plugin'' of Jenkins also provides good web interface and history
 tracking. (fig \ref{checkstyle-result}, \ref{checkstyle-compare},
 \ref{checkstyle-trend})
 
@@ -480,7 +480,7 @@ tracking. (fig \ref{checkstyle-result}, \ref{checkstyle-compare},
 
 \subsection{Compiler Warnings}
 
-We also collect compiler warnings with "compiler warning" plugin. For showing
+We also collect compiler warnings with ``compiler warning'' plugin. For showing
 the trend of compiler warnings and this pushes developers produce higher
 quality code. (fig. \ref{compiler-result}, \ref{compiler-trend})
 
@@ -550,8 +550,8 @@ providing more build and test scripts. And there are some other ideas:
 
 \begin{itemize}
 \item CI for ports\\
-  Collaboration with "redports"\\
-  Automatically "exp-run"
+  Collaboration with ``redports''\\
+  Automatically ``exp-run''
 \item Check for reproducible build
 \item More tests, even some are not enabled by default\\
 Dtrace
