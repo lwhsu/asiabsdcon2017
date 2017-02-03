@@ -323,10 +323,10 @@ aarch64-binutils
 (build.sh)
 #!/bin/sh
 env \
-	JFLAG=${BUILDER_JFLAG} \
-	TARGET=arm64 \
-	TARGET_ARCH=aarch64 \
-	sh -x freebsd-ci/scripts/build/build-world-kernel.sh
+  JFLAG=${BUILDER_JFLAG} \
+  TARGET=arm64 \
+  TARGET_ARCH=aarch64 \
+  sh -x freebsd-ci/scripts/build/build-world-kernel.sh
 \end{lstlisting}
 
 We also add a "quarantine mode" of "build-in-jail script sets", just specify
