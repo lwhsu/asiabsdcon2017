@@ -445,13 +445,44 @@ For document build, we use igor by Warren Block, and Checkstyle for checking
 the style of document XML. We worked with Warren and added a new option (-X) to
 igor, to output checkstyle XML. The respective job is FreeBSD-doc-head-igor.
 "Checkstyle Plugin" of Jenkins also provides good web interface and history
-tracking. (fig 10, 11, 12)
+tracking. (fig \ref{checkstyle-result}, \ref{checkstyle-compare},
+\ref{checkstyle-trend})
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{checkstyle-result.png}
+\caption{Igor + Checksytle - result}
+\label{checkstyle-result}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics{checkstyle-compare.png}
+\caption{Igor + Checkstyle - compare with previous build}
+\label{checkstyle-compare}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics{checkstyle-trend.png}
+\caption{Igor + Checkstyle - trend}
+\label{checkstyle-trend}
+\end{figure*}
 
 \subsection{Compiler Warnings}
 
 We also collect compiler warnings with "compiler warning" plugin. For showing
 the trend of compiler warnings and this pushes developers produce higher
-quality code. (fig. 13, 14)
+quality code. (fig. \ref{compiler-result}, \ref{compiler-trend})
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{compiler-result.png}
+\caption{Compiler Warnings - result}
+\label{compiler-result}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics{compiler-trend.png}
+\caption{Compiler Warnings - trend}
+\label{compiler-trend}
+\end{figure*}
 
 \subsection{Build Status Badge}
 
