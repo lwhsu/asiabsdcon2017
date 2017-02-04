@@ -96,8 +96,8 @@ development.
 
 In 2016, with the hardwares sponsored by the FreeBSD foundation, we created
 \url{https://ci.FreeBSD.org}, an experimental site for testing new ideas. We
-still leverage Jenkins because it has proven useful on jenkins.FreeBSD.org. We
-implemented:
+still leverage Jenkins because it has proven useful on jenkins.FreeBSD.org.
+Aditionally, we implemented:
 
 \begin{itemize}
 \item Artifact server
@@ -105,21 +105,24 @@ implemented:
 \end{itemize}
 
 Having a centralized artifact server enables people retrieving the files
-generated from each stage of a build, for reproducing issues for debugging
-purpose, or doing further tests. The details about job template are in ``open
-configurations'' section. Another experiment in this system is we are trying to
-make the build pipeline more fine-grained, and introduced more build types. For
-example, we not only created virtual machine disk image specialized for tests,
-but try to produce the distribution files and virtual machine disk images same
-as official release from release engineering provided. Also, we build LINT
-kernel for more test coverage.
+generated from each stage of a pipeline, which can be used for reproducing
+issues for debugging purpose, or doing further tests. The details about job
+template are in ``open configurations'' section.
 
-The naming conversion of the build jobs is:
+Another experiment in this system is we try to make the build pipeline more
+fine-grained, and introduced more build stages. For example, we not only create
+virtual machine disk image specialized for tests, but also try to produce the
+distribution files and virtual machine disk images the same as the official
+release provided by release engineering team . Also, we build LINT kernel for
+more test coverage.
+
+There are multiple stages in a pipelne, each is a Jenkins job. The naming
+conversion of the build jobs is:
 \begin{lstlisting}[basicstyle=\normalsize\ttfamily,frame=]
 FreeBSD-{branch}-{target_arch}-{stage}
 \end{lstlisting}
-For each supported branch and architecture, there are several jobs in a full
-pipeline.  Take head branch and amd64 architecture for example:
+We create a pipeline for each supported branch and architecture.
+Take head branch and amd64 architecture for example:
 
 \begin{itemize}
 \item FreeBSD-head-amd64-build:\\
@@ -144,7 +147,7 @@ Their relationship is shown in ~\ref{pipeline}
 
 The codes are available at \url{https://github.com/lwhsu/freebsd-ci} and
 \url{https://github.com/lwhsu/jjb-freebsd-ci}, merging back to the main
-freebsd-ci repository or even svn.freebsd.org is proceeding.
+freebsd-ci repository or even svn.freebsd.org is in progress.
 
 \section{Self Tests}
 
@@ -160,7 +163,7 @@ required files and packages for running tests. We pre-install the kyua package
 and put a script which runs kyua commands, and generates the test reports after
 all tests are executed. Finally it issues shutdown command. After the disk
 image ready, for amd64 and i386 architecture, we launch a bhyve virtual
-machine, with a expect script for starting running tests in, and also for
+machine, with an expect script for starting running tests in, and also for
 catching timeout in case.
 
 After the testing virtual machine stopped, we extracted the test results from
@@ -197,11 +200,17 @@ outputs from the builds, make it a friendly accessible web interface at
 \label{test-result-trend}
 \end{figure*}
 
-The artifact.ci.FreeBSD.org is newly introduced in ci.FreeBSD.org, we upload
-the artifacts created in each stage of a build pipeline. We Add FTP over TLS
-feature in ``Publish Over FTP Plugin'', in the end of each stage, Jenkins uploads
-created files through FTPES, there is only one root directory ``snapshots'' in
-artifact.ci.FreeBSD.org, and the directory layout of it is:
+The artifact.ci.FreeBSD.org is newly introduced in ci.FreeBSD.org, its main
+responsibility is to share files between jobs in a pipeline.  The artifact
+server is basically an FTP server powered by Pure-FTPd for serving files
+uploading.  For downloading, we use a nginx web server to provide read-only
+access.  For security reason, we configure FTP server can only be accessed by
+FTP over TLS.  As a result, we also added FTP over TLS feature in ``Publish
+Over FTP Plugin'' of Jenkins.
+
+In the end of each stage, Jenkins uploads created files to the artifact server,
+there is only one root directory ``snapshots'' on artifact.ci.FreeBSD.org for
+now.  The directory layout of it is:
 \path{{branch}/{svn_revision}/{target}/{target_arch}}, for example,
 \path{head/r303226/amd64/amd64} . This layout is compatible with the official
 download site. We hope that in the future these snapshot artifacts can also be
