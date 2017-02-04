@@ -31,30 +31,31 @@
 \thispagestyle{empty}
 
 \subsection*{Abstract}
-The FreeBSD project's continuous integration project started in the late 2013.
-We use Jenkins automation server to build our continuous integration system.
-It monitors the svn repository for new commits and triggers a new build of it.
-In each build, the build machine compiles the latest code, creates disk image
-and creates a virtual machine to run test suite. In the meantime, we collect
-the compiler warnings and perform some further checks like clang analyzer. All
-these information are published to the developers and users to improve the
-quality of the FreeBSD project. In this paper, we describe the details of the
-system implementation.
+The FreeBSD project \cite{freebsd}'s continuous integration project started in
+the late 2013.  We use Jenkins \cite{jenkins} automation server to build our
+continuous integration system.  It monitors the svn repository for new commits
+and triggers a new build of it.  In each build, the build machine compiles the
+latest code, creates disk image and creates a virtual machine to run test
+suite. In the meantime, we collect the compiler warnings and perform some
+further checks like clang analyzer. All these information are published to the
+developers and users to improve the quality of the FreeBSD project. In this
+paper, we describe the details of the system implementation.
 
 \section{Introduction}
 
-The term of continuous integration (CI) is first used by Grady Booch in 1991,
-then Extreme programming (XP) extends the concept of CI and suggests to
-integrate as many times as possible per day. Now, CI is an important and common
-practice of software engineering. The benefits of CI are developers can know
-the conflicts and bugs earlier. This reduces the cost for resolving them later.
-Also, the status of the project is clearer and it is easier to estimate
-progress.
+The term of continuous integration (CI) is first used by Grady Booch in 1991
+\cite{booch1991}, then Extreme programming (XP) extends the concept of CI and
+suggests to integrate as many times as possible per day. Now, CI is an
+important and common practice of software engineering. The benefits of CI are
+developers can know the conflicts and bugs earlier. This reduces the cost for
+resolving them later.  Also, the status of the project is clearer and it is
+easier to estimate progress.
 
 There are many software designed for various CI need, among them, the most
 popular one is Jenkins, an open source automation server written in Java,
 created by Kohsuke Kawaguchi. We use Jenkins as the main component, along with
-some other daemons like Pure-FTPd, to build FreeBSD project's CI system.
+some other daemons like Pure-FTPd \cite{pure-ftpd}, to build FreeBSD project's
+CI system.
 
 We describe the history of FreeBSD's CI work, how we trigger build from changes
 in version control system, do tests and publish results in the rest of this
@@ -203,10 +204,10 @@ outputs from the builds, make it a friendly accessible web interface at
 The artifact.ci.FreeBSD.org is newly introduced in ci.FreeBSD.org, its main
 responsibility is to share files between jobs in a pipeline.  The artifact
 server is basically an FTP server powered by Pure-FTPd for serving files
-uploading.  For downloading, we use a nginx web server to provide read-only
-access.  For security reason, we configure FTP server can only be accessed by
-FTP over TLS.  As a result, we also added FTP over TLS feature in ``Publish
-Over FTP Plugin'' of Jenkins.
+uploading.  For downloading, we use a nginx \cite{nginx} web server to provide
+read-only access.  For security reason, we configure FTP server can only be
+accessed by FTP over TLS.  As a result, we also added FTP over TLS feature in
+``Publish Over FTP Plugin'' of Jenkins.
 
 In the end of each stage, Jenkins uploads created files to the artifact server,
 there is only one root directory ``snapshots'' on artifact.ci.FreeBSD.org for
@@ -464,12 +465,12 @@ which generates good web interface and history tracking (fig.
 
 \subsection{Igor and Checkstyle}
 
-For document build, we use igor by Warren Block, and Checkstyle for checking
-the style of document XML. We worked with Warren and added a new option (-X) to
-igor, to output checkstyle XML. The respective job is FreeBSD-doc-head-igor.
-``Checkstyle Plugin'' of Jenkins also provides good web interface and history
-tracking. (fig \ref{checkstyle-result}, \ref{checkstyle-compare},
-\ref{checkstyle-trend})
+For document build, we use igor \cite{igor} by Warren Block, and Checkstyle
+\cite{checkstyle} for checking the style of document XML. We worked with Warren
+and added a new option (-X) to igor, to output checkstyle XML. The respective
+job is FreeBSD-doc-head-igor.  ``Checkstyle Plugin'' of Jenkins also provides
+good web interface and history tracking. (fig \ref{checkstyle-result},
+\ref{checkstyle-compare}, \ref{checkstyle-trend})
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{checkstyle-result.png}
@@ -586,7 +587,21 @@ We want to thank following people, for sponsoring energy, idea and hardware:
 \item People on -testing, -current, -stable mailing lists
 \end{itemize}
 
-{\footnotesize \bibliographystyle{acm}
-\bibliography{../common/bibliography}}
+\begin{thebibliography}{999}
+\bibitem{freebsd} The FreeBSD Project,
+\url{https://www.FreeBSD.org}
+\bibitem{jenkins} Jenkins,
+\url{https://jenkins.io}
+\bibitem{booch1991}  Booch, Grady, \textit{ Object Oriented Design: With Applications},
+Benjamin Cummings, 1991
+\bibitem{pure-ftpd} Pure-FTPd,
+\url{https://www.pureftpd.org}
+\bibitem{pure-ftpd} nginx,
+\url{https://nginx.org/}
+\bibitem{checkstyle} Checkstyle,
+\url{http://checkstyle.sourceforge.net}
+\bibitem{igor} Warren Block, \textit{igor, FreeBSD Documentation Project sanity check script},
+\url{http://www.wonkity.com/~wblock/igor/}
+\end{thebibliography}
 
 \end{document}
