@@ -115,9 +115,11 @@ as official release from release engineering provided. Also, we build LINT
 kernel for more test coverage.
 
 The naming conversion of the build jobs is:
-$FreeBSD-{branch}-{target\_arch}-{stage}$. For each supported branch and
-architecture, there are several jobs in a full pipeline.  Take head branch and
-amd64 architecture for example:
+\begin{lstlisting}[basicstyle=\normalsize\ttfamily,frame=]
+FreeBSD-{branch}-{target_arch}-{stage}
+\end{lstlisting}
+For each supported branch and architecture, there are several jobs in a full
+pipeline.  Take head branch and amd64 architecture for example:
 
 \begin{itemize}
 \item FreeBSD-head-amd64-build\\
@@ -148,7 +150,7 @@ freebsd-ci repository or even svn.freebsd.org is proceeding.
 
 In 2013 Rui Paulo created the \path{/usr/tests} hierarchy, with the Kyua test
 framework by Julio Merino. These tests can be performed by command:
-\begin{lstlisting}[basicstyle=\normalsize\ttfamily]
+\begin{lstlisting}[basicstyle=\normalsize\ttfamily,frame=]
 cd /usr/tests && kyua test
 \end{lstlisting}
 As of January 2017, we have 6023 tests for head branch on amd64 architecture.
