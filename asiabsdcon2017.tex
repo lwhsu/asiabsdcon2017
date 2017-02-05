@@ -74,7 +74,7 @@ here are many scripts from this project derived or inspiring the successive
 projects.
 
 In late 2013, Craig Rodrigues founded jenkins-admin@FreeBSD.org with several
-developers. The main duty of jenkins-admin is maintaining the jenkins
+developers. The main duty of jenkins-admin is maintaining the Jenkins
 instance in FreeBSD cluster, \url{https://jenkins.FreeBSD.org}. Which is an
 independent successor of tinderbox.FreeBSD.org. We configure it monitors the
 FreeBSD src and doc repositories, and triggers a new build when there is new
@@ -82,7 +82,7 @@ commit in each supported branch. We created the first ``build-and-test pipeline'
 for the FreeBSD project. In each build triggered by a change in repository,
 after compiling successes, we create a virtual machine disk image with the
 latest binaries, and spawn a new virtual machine to run tests. The test results
-are collected and stored by jenkins server.
+are collected and stored by Jenkins server.
 
 The highlight features of jenkins.FreeBSD.org are:
 
@@ -169,7 +169,7 @@ machine, with an expect script for starting running tests in, and also for
 catching timeout in case.
 
 After the testing virtual machine stopped, we extracted the test results from
-the disk image, and put to the workspace where jenkins will send back to the
+the disk image, and put to the workspace where Jenkins will send back to the
 master for accounting. The script to create test virtual machine image is
 \path{scripts/build/build-test_image.sh}, and the main script for executing
 tests in virtual machines and extracting results is
@@ -301,7 +301,7 @@ the things user can do for testing. As a result, ``build-in-jail script sets''
 is created, they are currently developed at
 \url{https://github.com/lwhsu/freebsd-ci/tree/jjb/scripts/jail}. It's first job
 is simplify environment setup and job execution, we have three scripts for each
-builder and publishers in definition of jenkins job builder:
+builder and publishers in definition of Jenkins job builder:
 
 \begin{itemize}
 \item setup.sh\\
