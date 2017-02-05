@@ -154,8 +154,9 @@ progress.
 
 \section{Self Tests}
 
-In 2013 Rui Paulo created the \path{/usr/tests} hierarchy, with the Kyua test
-framework by Julio Merino. These tests can be performed by command:
+In 2013 Rui Paulo created the \path{/usr/tests} hierarchy, with the Kyua
+\cite{kyua} test framework by Julio Merino. These tests can be performed by
+command:
 \begin{lstlisting}[basicstyle=\normalsize\ttfamily,frame=]
 cd /usr/tests && kyua test
 \end{lstlisting}
@@ -165,22 +166,23 @@ As previous section mentioned, we build virtual machine disk images with the
 required files and packages for running tests. We pre-install the kyua package
 and put a script which runs kyua commands, and generates the test reports after
 all tests are executed. Finally it issues shutdown command. After the disk
-image ready, for amd64 and i386 architecture, we launch a bhyve virtual
-machine, with an expect script for starting running tests in, and also for
-catching timeout in case.
+image ready, for amd64 and i386 architecture, we launch a bhyve \cite{bhyve}
+virtual machine, with an expect script for starting running tests in, and also
+for catching timeout in case.
 
 After the testing virtual machine stopped, we extracted the test results from
-the disk image, and put to the workspace where Jenkins will send back to the
-master for accounting. The script to create test virtual machine image is
+the disk image, put to the workspace where Jenkins slave daemon will collect them and
+send back to the Jenkins master for archiving and maintaining a trend record.
+The script to create test virtual machine image is
 \path{scripts/build/build-test_image.sh}, and the main script for executing
 tests in virtual machines and extracting results is
 \path{scripts/test/run-tests.sh}.
 
 \section{Access to Results}
 
-We configure Kyua to generate results as JUnit XML format, which is natively
-supported by Jenkins, and many other tools. Jenkins default plugins take
-outputs from the builds, make it a friendly accessible web interface at
+We configure Kyua to generate results as JUnit \cite{junit} XML format, which
+is natively supported by Jenkins and many other tools. Jenkins default plugins
+take outputs from the builds, make it a friendly accessible web interface at
 \url{https://<job-url>/<build-number>/testReport} (fig. ~\ref{test-result},
 ~\ref{failed-result}), and maintains a historical data (fig.
 \ref{test-result-trend}). This helps us tracking the software quality trending.
@@ -203,13 +205,14 @@ outputs from the builds, make it a friendly accessible web interface at
 \label{test-result-trend}
 \end{figure*}
 
-The artifact.ci.FreeBSD.org is newly introduced in ci.FreeBSD.org, its main
-responsibility is to share files between jobs in a pipeline.  The artifact
-server is basically an FTP server powered by Pure-FTPd for serving files
-uploading.  For downloading, we use a nginx \cite{nginx} web server to provide
-read-only access.  For security reason, we configure FTP server can only be
-accessed by FTP over TLS.  As a result, we also added FTP over TLS feature in
-``Publish Over FTP Plugin'' of Jenkins.
+The artifact server, artifact.ci.FreeBSD.org is newly introduced in
+ci.FreeBSD.org, its main responsibility is to share files between jobs in a
+pipeline.  The artifact server is basically an FTP server powered by Pure-FTPd
+for serving files uploading.  For downloading, we use a nginx \cite{nginx} web
+server to provide read-only access.  For security reason, we configure FTP
+server can only be accessed by FTP over TLS.  As a result, we also added FTP
+over TLS feature in ``Publish Over FTP Plugin''
+\cite{jenkoins-publish-over-ftp} of Jenkins.
 
 In the end of each stage, Jenkins uploads created files to the artifact server,
 there is only one root directory ``snapshots'' on artifact.ci.FreeBSD.org for
@@ -246,18 +249,18 @@ It is very important to make public can setup a highly identical instance of a
 public service, and security is also need to be considered. In the past,
 Jenkins job can only be edited on web interface, which is not easy to tracking
 the changes and reproduce. Users who has no administrative permission cannot
-see exactly configurations. Jenkins 2.0's ``pipeline as code''' is a very
+see exactly configurations. Jenkins 2's ``pipeline as code''' is a very
 promising to solve this problem. On jenkins.FreeBSD.org, we have tested it for
 the jobs which build head and stable-10 branch. The source code is available at
 \url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/build/build-test.groovy}.
 However, currently not all the required Jenkins plugins of ci.FreeBSD.org
 supports this. We will look into this again and may switch it later.
 
-We use an approach used by other project for a long time, Jenkins job builder,
-which converts YAML files to Jenkins XML configurations. And manipulate Jenkins
-instance via web service. With Jenkins job builder, the configuration of
-Jenkins is trackable and reproducible, and we can separate security credentials
-to other storage.
+We use an approach used by other project for a long time, Jenkins job builder
+\cite{jenkins-job-builder}, which converts YAML files to Jenkins XML
+configurations. And manipulate Jenkins instance via web service. With Jenkins
+job builder, the configuration of Jenkins is trackable and reproducible, and we
+can separate security credentials to other storage.
 
 While working with other developers, we found the fact that not everyone knows
 (and has to know) how to configure Jenkins. So adding new build jobs requires
@@ -297,9 +300,9 @@ The respective job definition (of Jenkins job builder) is very simple
 \end{lstlisting}
 
 And we use jail to ensure the freshness of the build environment, and we can
-install ``sudo'' program inside jail, with full privileges granted, for maximum
-the things user can do for testing. As a result, ``build-in-jail script sets''
-is created, they are currently developed at
+install ``sudo'' \cite{sudo} program inside jail, with full privileges granted,
+for maximum the things user can do for testing. As a result, ``build-in-jail
+script sets'' is created, they are currently developed at
 \url{https://github.com/lwhsu/freebsd-ci/tree/jjb/scripts/jail}. It's first job
 is simplify environment setup and job execution, we have three scripts for each
 builder and publishers in definition of Jenkins job builder:
@@ -321,13 +324,13 @@ A typical job configuration contains three files:
 \item jail.conf\\
   Jail environment configuration: version, arch, etc.
 \item pkg-list\\
-  Package needs to be installed (from pkg.FreeBSD.org)
+  Package needs to be installed (from \url{pkg.FreeBSD.org})
 \end{itemize}
 
 With these, adding a new job is much simplified. Submitter can just test their
 tested build script (build.sh), with some job definitions (jail.conf,
 pkg-list), and other configuration files, for example, src.conf or make.conf.
-Then jenkins-admin merges scripts to freebsd-ci/jobs/<job name>/, and
+Then jenkins-admin merges scripts to \path{freebsd-ci/jobs/<job name>/}, and
 jenkins-admin creates a new job entry in jenkins job builder, push the new
 configuration to the Jenkins server. Everything is done. Our Jenkins server
 will execute it around the clock.
@@ -392,18 +395,21 @@ And for notification email, we attach following information:
 Email notification is considered a ``double-edged sword'', once we send out too
 many mails and people will consider them as spam. If nobody reads the
 notification mails and takes action, it is totally no use. So use carefully
-created a pre-send script with ``Email-ext plugin'', for filter out the
-internal errors of the jenkins cluster, to reduce false alert. The script is
-available at:
+created a pre-send script with ``Email-ext plugin'' \cite{jenkins-email-ext},
+for filter out the internal errors of the jenkins cluster, to reduce false
+alert. The script is available at:
 \url{https://github.com/freebsd/freebsd-ci/blob/master/scripts/email-ext/pre-send.groovy}
 .
 
 \subsection{Code Review System}
 
 The FreeBSD project owns a code review system at \url{https://reviews.FreeBSD.org},
-which is setup with Phabricator, and jenkins has a ``Phabricator Differential
-Plugin'' plugin. It currently supports only git, we patched it to support
-subversion, and are also preparing to upstream it.
+which is setup with Phabricator \cite{phabricator}, and jenkins has a
+``Phabricator Differential Plugin''
+\cite{jenkins-phabricator-differential-plugin} plugin. It currently supports
+only git, we patched it to support subversion:
+\url{https://github.com/lwhsu/phabricator-jenkins-plugin/tree/scm}, and are
+also preparing to upstream it.
 
 On ci.FreeBSD.org, we have two jobs:
 
@@ -422,7 +428,7 @@ are triggered when a new patch is uploaded to reviews.FreeBSD.org (fig.
 \label{build-patch}
 \end{figure*}
 
-And reports the build result back to reviews.FreeBSD.org (fig.
+And reports the build result back to \url{reviews.FreeBSD.org} (fig.
 ~\ref{patch-build-result}).
 
 \begin{figure*}
@@ -433,17 +439,18 @@ And reports the build result back to reviews.FreeBSD.org (fig.
 
 \subsection{Clang Static Analyzer}
 
-We created a ``clang clang-build'' job with Clang Static Analyzer, and
-leveraged the ``bsd.clang-analyzed.mk'' from NetBSD, simple build the whole
+We created a ``clang clang-build'' job with Clang Static Analyzer
+\cite{clang-static-analyzer} and the build script leveraged the
+``bsd.clang-analyzed.mk'' from NetBSD \cite{netbsd}, simply build the whole
 world and kernel with:
 
-\begin{lstlisting}
+\begin{lstlisting}[basicstyle=\normalsize\ttfamily,frame=]
 make analyze \
 CLANG_ANALYZE_OUTPUT_DIR=clangScanBuildReports \
 CLANG_ANALYZE_OUTPUT=html
 \end{lstlisting}
 
-command, then the result being taken cared by ``Clang Scan-Build Plugin'',
+command, then the result being taken cared by ``Clang Scan-Build Plugin'' \cite{jenkins-clang-scan-build-plugin},
 which generates good web interface and history tracking (fig.
 \ref{scan-build-result}, \ref{scan-build-path}, \ref{clang-scan-build-trend})
 
@@ -470,9 +477,10 @@ which generates good web interface and history tracking (fig.
 For document build, we use igor \cite{igor} by Warren Block, and Checkstyle
 \cite{checkstyle} for checking the style of document XML. We worked with Warren
 and added a new option (-X) to igor, to output checkstyle XML. The respective
-job is FreeBSD-doc-head-igor.  ``Checkstyle Plugin'' of Jenkins also provides
-good web interface and history tracking. (fig \ref{checkstyle-result},
-\ref{checkstyle-compare}, \ref{checkstyle-trend})
+job is FreeBSD-doc-head-igor.  ``Checkstyle Plugin''
+\cite{jenkins-checkstyle-plugin} of Jenkins also provides good web interface
+and history tracking. (fig \ref{checkstyle-result}, \ref{checkstyle-compare},
+\ref{checkstyle-trend})
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{checkstyle-result.png}
@@ -494,9 +502,10 @@ good web interface and history tracking. (fig \ref{checkstyle-result},
 
 \subsection{Compiler Warnings}
 
-We also collect compiler warnings with ``compiler warning'' plugin. For showing
-the trend of compiler warnings and this pushes developers produce higher
-quality code. (fig. \ref{compiler-result}, \ref{compiler-trend})
+We also collect compiler warnings with ``Warnings Plugin''
+\cite{jenkins-warnings-plugin}. For showing the trend of compiler
+warnings and this pushes developers produce higher quality code. (fig.
+\ref{compiler-result}, \ref{compiler-trend})
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{compiler-result.png}
@@ -512,8 +521,10 @@ quality code. (fig. \ref{compiler-result}, \ref{compiler-trend})
 
 \subsection{Build Status Badge}
 
-We provide build status badge for embedding in external web pages. For example,
-on \url{https://wiki.FreeBSD.org/arm64} , we have badge as fig.
+We provide build status badge for embedding in external web pages through
+``Embeddable Build Status Plugin''
+\cite{jenkins-embeddable-build-status-plugin}. For example, on
+\url{https://wiki.FreeBSD.org/arm64} , we have badge as fig.
 ~\ref{build-status-badge}
 
 \begin{figure*}
@@ -534,16 +545,16 @@ We also use some other plugins for improving the interface and helping the
 maintenance task:
 
 \begin{itemize}
-\item SCM Sync configuration
+\item SCM Sync configuration \cite{jenkins-scm-sync-configuration-plugin}
   \begin{itemize}
   \item Use post-commit hook to notify administrators
   \end{itemize}
-\item SafeRestart
+\item SafeRestart \cite{jenkins-saferestart-plugin}
   \begin{itemize}
   \item Schedule restart jenkins when all current jobs complete
   \item Save and resume the build queue
   \end{itemize}
-\item Green balls
+\item Green balls \cite{jenkins-green-balls-plugin}
   \begin{itemize}
   \item To replace blue status ball with green ones, to fulfill the convention
         for most culture.
@@ -608,6 +619,44 @@ Benjamin Cummings, 1991
 \url{https://wiki.freebsd.org/Tinderbox}
 \bibitem{tinerbox-doc} Tinderbox, FreeBSD Developers' Handbook
 \url{https://www.freebsd.org/doc/en/books/developers-handbook/testing-tinderbox.html}
+\bibitem{bhyve} bhyve(8), FreeBSD System Manager's Manual
+\url{https://man.freebsd.org/bhyve}
+\bibitem{kyua} Merino, Julio, Kyua, Testing framework for infrastructure software
+\url{https://github.com/jmmv/kyua}
+\bibitem{junit} JUnit
+\url{http://junit.org}
+\bibitem{jenkins-publish-over-ftp} Jenkins Publish Over FTP Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+FTP+Plugin}
+\bibitem{sudo} Sudo
+\url{http://www.sudo.ws}
+\bibitem{jenkins-job-builder} Jenkins Job Builder
+\url{http://docs.openstack.org/infra/jenkins-job-builder/}
+\bibitem{jenkins-email-ext} Jenkins Email-ext plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Email-ext+plugin}
+\bibitem{phabricator} Phabricator
+\url{https://www.phacility.com/phabricator/}
+\bibitem{jenkins-phabricator-differential-plugin} Jenkins Phabricator Differential Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Phabricator+Differential+Plugin}
+\bibitem{clang-static-analyzer} Clang Static Analyzer
+\url{https://clang-analyzer.llvm.org}
+\bibitem{netbsd} The NetBSD Project
+\url{http://www.netbsd.org}
+\bibitem{jenkins-clang-scan-build-plugin} Jenkins Clang Scan-Build Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Clang+Scan-Build+Plugin}
+\bibitem{jenkins-checkstyle-plugin} Jenkins Checkstyle Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Checkstyle+Plugin}
+\bibitem{jenkins-warnings-plugin} Jenkins Warnings Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Warnings+Plugin}
+\bibitem{jenkins-embeddable-build-status-plugin} Jenkins Embeddable Build Status Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Embeddable+Build+Status+Plugin}
+\bibitem{jenkins-scm-sync-configuration-plugin} Jenkins SCM Sync configuration plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin}
+\bibitem{jenkins-scm-sync-configuration-plugin} Jenkins SCM Sync configuration plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin}
+\bibitem{jenkins-saferestart-plugin} Jenkins SafeRestart Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/SafeRestart+Plugin}
+\bibitem{jenkins-green-balls-plugin} Jenkins Green Balls Plugin
+\url{https://wiki.jenkins-ci.org/display/JENKINS/Green+Balls}
 \end{thebibliography}
 
 \end{document}
