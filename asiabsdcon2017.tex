@@ -439,20 +439,21 @@ And reports the build result back to \url{reviews.FreeBSD.org} (fig.
 
 \subsection{Clang Static Analyzer}
 
-We created a ``clang clang-build'' job with Clang Static Analyzer
+We created a ``clang scan-build'' job with Clang Static Analyzer
 \cite{clang-static-analyzer} and the build script leveraged the
 ``bsd.clang-analyzed.mk'' from NetBSD \cite{netbsd}, simply build the whole
-world and kernel with:
+world and kernel with command in listing \ref{make-analyze}.
 
-\begin{lstlisting}[basicstyle=\normalsize\ttfamily,frame=]
+\begin{lstlisting}[caption=Command to perform clang scan-build,label=make-analyze]
 make analyze \
 CLANG_ANALYZE_OUTPUT_DIR=clangScanBuildReports \
 CLANG_ANALYZE_OUTPUT=html
 \end{lstlisting}
 
-command, then the result being taken cared by ``Clang Scan-Build Plugin'' \cite{jenkins-clang-scan-build-plugin},
-which generates good web interface and history tracking (fig.
-\ref{scan-build-result}, \ref{scan-build-path}, \ref{clang-scan-build-trend})
+The result is taken cared by ``Clang Scan-Build Plugin''
+\cite{jenkins-clang-scan-build-plugin}, which generates good web interface and
+history tracking (fig.  \ref{scan-build-result}, \ref{scan-build-path},
+\ref{clang-scan-build-trend})
 
 \begin{figure*}
 \includegraphics[width=\textwidth]{scan-build-result.png}
